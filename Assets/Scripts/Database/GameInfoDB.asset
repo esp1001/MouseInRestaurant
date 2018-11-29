@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccd5492a196163a45a73c44b0071b845, type: 3}
+  m_Name: GameInfoDB
+  m_EditorClassIdentifier: Assembly-CSharp::LevelsInfo
+  StartLevelIdx: 1
+  CurrentLevelIdx: 1
+  IsAllowedVariousLevels: 1
+  AllLevelInfos:
+  - LevelName: Level 01
+    Idx: 1
+    FloorTexture: {fileID: 21300000, guid: 5e0c5502e0989b84791156ba1239855e, type: 3}
+    StaticObjects:
+    - StaticObjectPrefabIdx: 0
+      CoordinatesToInstantiate: {x: -1.77, y: 3}
+    - StaticObjectPrefabIdx: 0
+      CoordinatesToInstantiate: {x: 1.71, y: 3}
+    - StaticObjectPrefabIdx: 0
+      CoordinatesToInstantiate: {x: 0, y: 0.49}
+    - StaticObjectPrefabIdx: 0
+      CoordinatesToInstantiate: {x: -1.86, y: -1.86}
+    - StaticObjectPrefabIdx: 0
+      CoordinatesToInstantiate: {x: 1.86, y: -1.86}
+    - StaticObjectPrefabIdx: 0
+      CoordinatesToInstantiate: {x: 0, y: -4.3}
+    Routes:
+    - {fileID: 1069318994464546, guid: 79cbe1fd67d7e1944837bd2125ea847d, type: 2}
+    - {fileID: 1093867629369860, guid: dbc609ade6222c34ba469d8718b0cf28, type: 2}
+    - {fileID: 1179814216404102, guid: 47edee0f2f5671e4cb4ec26d0388e48c, type: 2}
+    - {fileID: 1992681857436556, guid: 4067d9b5c9c22084590941f0da73a7a5, type: 2}
+    - {fileID: 1251010059484852, guid: 56120043eaa0b0b4db1faa01d668d1cd, type: 2}
+    - {fileID: 1816166643862236, guid: a0d39ac6d05a9e34eade23695ec7fb28, type: 2}
+  - LevelName: Level 02
+    Idx: 2
+    FloorTexture: {fileID: 21300000, guid: ac919af337930f2449719dd3b06cea4c, type: 3}
+    StaticObjects:
+    - StaticObjectPrefabIdx: 0
+      CoordinatesToInstantiate: {x: -1.77, y: 3}
+    - StaticObjectPrefabIdx: 0
+      CoordinatesToInstantiate: {x: 1.71, y: 3}
+    Routes:
+    - {fileID: 1069318994464546, guid: 79cbe1fd67d7e1944837bd2125ea847d, type: 2}
+    - {fileID: 1093867629369860, guid: dbc609ade6222c34ba469d8718b0cf28, type: 2}
+    - {fileID: 1179814216404102, guid: 47edee0f2f5671e4cb4ec26d0388e48c, type: 2}
+  StaticObjectPrefabs:
+  - {fileID: 1541075517344312, guid: 23ecd86645cf34449af5141e2e9803e8, type: 2}
+  MicePrefabs:
+  - Type: 0
+    IsOrdinary: 1
+    Prefab: {fileID: 1503450808379128, guid: 6e60990ba227db940b22f8425ff1a4eb, type: 2}
+    Scale: {x: 0.2, y: 0.15, z: 1}
+  - Type: 1
+    IsOrdinary: 1
+    Prefab: {fileID: 1623915623605382, guid: b0f9594edd490584a92ec7018d3514d1, type: 2}
+    Scale: {x: 0.2, y: 0.15, z: 1}
+  - Type: 2
+    IsOrdinary: 0
+    Prefab: {fileID: 1604789947173712, guid: 6880d2b217277214f995589d3a9d4120, type: 2}
+    Scale: {x: 0.2, y: 0.15, z: 1}
+  MousePerLevelKoef: 5
+  MouseFrequencyOfAppearance:
+  - {x: 1, y: 1, z: 1.5}
+  - {x: 2, y: 1, z: 1}
+  - {x: 3, y: 1, z: 0.7}
+  - {x: 4, y: 2, z: 1.3}
+  - {x: 5, y: 2, z: 1}
+  - {x: 6, y: 3, z: 2}
+  MouseMovementSpeed:
+  - {x: 1, y: 1}
+  - {x: 2, y: 1.3}
+  - {x: 3, y: 1.6}
+  - {x: 4, y: 1.9}
+  - {x: 5, y: 2.2}
