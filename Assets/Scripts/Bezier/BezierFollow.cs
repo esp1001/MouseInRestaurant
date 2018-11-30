@@ -4,6 +4,7 @@ using DG.Tweening;
 using UnityEngine;
 
 public class BezierFollow : MonoBehaviour
+    , IHandler<EndGameEventMessage>
 {
 
     [SerializeField]
@@ -13,9 +14,9 @@ public class BezierFollow : MonoBehaviour
 
     private float _tParam;
 
+    private Vector2 _mousePosition;
 
-    private Vector2 _shipPosition;
-
+    [SerializeField]
     private float _speedModifier;
 
     private bool _coroutineAllowed;
@@ -24,11 +25,29 @@ public class BezierFollow : MonoBehaviour
 
     public bool IsStartSideIsStart;
 
+    public bool IsMovingPossible;
+
+    void Awake()
+    {
+        Init();
+    }
+
+    void Init()
+    {
+        AppManager.Instance.EventAgregator.AddHandler<EndGameEventMessage>(this);
+        IsMovingPossible = true;
+    }
+
+    private void OnDestroy()
+    {
+        AppManager.Instance.EventAgregator.RemoveHandler<EndGameEventMessage>(this);
+    }
+
     void Start()
     {
         _routeToGo = IsStartSideIsStart ? 0 : Routes.Count - 1;
         _tParam = 0f;
-        _speedModifier = 0.1f;
+        _speedModifier = 0.1f + (LevelInPlayManager.Instance.CurrentLevelIdx - 1) * DatabaseManager.Instance.GetIncreaseMouseSpeedKoef;
         _coroutineAllowed = true;
     }
 
@@ -48,16 +67,16 @@ public class BezierFollow : MonoBehaviour
         Vector2 p2 = Routes[routeNumber].GetChild(IsStartSideIsStart ? 2 : 1).position;
         Vector2 p3 = Routes[routeNumber].GetChild(IsStartSideIsStart ? 3 : 0).position;
 
-        while (_tParam < 1)
+        while (_tParam < 1 && IsMovingPossible)
         {
             _tParam += Time.deltaTime * _speedModifier;
 
-            _shipPosition = Mathf.Pow(1 - _tParam, 3) * p0
+            _mousePosition = Mathf.Pow(1 - _tParam, 3) * p0
                             + 3 * Mathf.Pow(1 - _tParam, 2) * _tParam * p1
                             + 3 * (1 - _tParam) * Mathf.Pow(_tParam, 2) * p2
                             + Mathf.Pow(_tParam, 3) * p3;
 
-            transform.position = _shipPosition;
+            transform.position = _mousePosition;
 
 
 
@@ -75,13 +94,10 @@ public class BezierFollow : MonoBehaviour
 
         _tParam = 0f;
 
-        if(IsStartSideIsStart)
+        if (IsStartSideIsStart)
             _routeToGo += 1;
         else
             _routeToGo -= 1;
-
-        //if (_routeToGo > Routes.Count - 1)
-        //_routeToGo = 0;
 
         if ((IsStartSideIsStart && _routeToGo < Routes.Count) || (!IsStartSideIsStart && _routeToGo >= 0))
             _coroutineAllowed = true;
@@ -100,7 +116,7 @@ public class BezierFollow : MonoBehaviour
             GetComponent<BoxCollider2D>().enabled = false;
             foreach (var curSpriteRenderer in allMousePartsSpriteRenderers)
             {
-                curSpriteRenderer.DOColor(Color.clear, 0.5f).OnComplete(delegate {gameObject.SetActive(false);});
+                curSpriteRenderer.DOColor(Color.clear, 0.5f).OnComplete(delegate { gameObject.SetActive(false); });
                 curSpriteRenderer.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), 0.5f);
             }
             AppManager.Instance.EventAgregator.SendMessageAll(new AddOneMouseEventMessage());
@@ -110,9 +126,15 @@ public class BezierFollow : MonoBehaviour
             foreach (var curSpriteRenderer in allMousePartsSpriteRenderers)
             {
                 curSpriteRenderer.DOColor(Color.red, 0.3f).SetLoops(2, LoopType.Yoyo);
-                curSpriteRenderer.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.3f).SetLoops(2, LoopType.Yoyo); 
+                curSpriteRenderer.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.3f).SetLoops(2, LoopType.Yoyo);
             }
             AppManager.Instance.EventAgregator.SendMessageAll(new RemoveHeartEventMessage());
         }
+    }
+
+    public void Handle(EndGameEventMessage message)
+    {
+        _coroutineAllowed = false;
+        IsMovingPossible = false;
     }
 }

@@ -58,10 +58,17 @@ public class GameInfo : ScriptableObject
     [Header("Hearts at Start")]
     public readonly int HeartsAtStart = 3;
 
+    [Header("Mouse start speed")]
+    public readonly float MouseStartSpeed = 0.1f;
+
+    [Header("Increase mouse speed koef")]
+    public readonly float IncreaseMouseSpeedKoef = 0.03f;
+
+
     [SerializeField]
     public int[,] MouseProbabilityOfAppearance = new int[10, 4]
     {
-        { 1, 40, 40, 20},
+        { 1, 50, 50,  0},
         { 2, 45, 45, 10},
         { 3, 40, 40, 20},
         { 4, 35, 35, 30},
@@ -83,12 +90,4 @@ public class GameInfo : ScriptableObject
         new Vector3(6, 3, 2)
     };
 
-    public Vector2[] MouseMovementSpeed = new Vector2[5]
-    {
-        new Vector2(1, 1),
-        new Vector2(2, 1.3f),
-        new Vector2(3, 1.6f),
-        new Vector2(4, 1.9f),
-        new Vector2(5, 2.2f)
-    };
 }

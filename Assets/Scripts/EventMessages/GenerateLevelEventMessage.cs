@@ -4,6 +4,6 @@
 
     public GenerateLevelEventMessage(int levelIdx)
     {
-        this.LevelIdx = levelIdx;
+        LevelIdx = levelIdx;
     }
 }

@@ -198,7 +198,7 @@ f16835701e71dd5d6fb1fed4b7aff1d8 Unity.TextMeshPro.dll:TMPro.TMP_Asset
 486cd95c82d8305219c352c06b776e1f Unity.TextMeshPro.dll:TMPro.TMP_SpriteAnimator
 837ae46cae41da62999b1ed9b760f53b DOTween.dll:DG.Tweening.Core.DOTweenComponent
 58b003d0b6ce15e57078a816e2140b4b DOTween.dll:DG.Tweening.Core.DOTweenSettings
-edd1f1f2496e03577a0152df624152a8 Assembly-CSharp.dll:.UiManager
+cf2230556f1a124785d44514f998894f Assembly-CSharp.dll:.UiManager
 eaf0bcdb10d442a4029d615f41d09957 Unity.TextMeshPro.dll:TMPro.TextContainer
 201273fb4f889724fb090164b7d6c657 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 486cd95c82d8305219c352c06b776e1f UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
@@ -215,7 +215,7 @@ da21fc3f8056b1f91c3dd09c7bf4f90a UnityEngine.Networking.dll:UnityEngine.Networki
 fc061f3ae8a876c0687e86378d4a447c UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 7ca56e063bd071986fff4f513cc4f477 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
 72a8523b432c0a5317826b7a9e0a0e79 Unity.TextMeshPro.dll:TMPro.PackageResourceImporterWindow
-051da5bf56c3573bfad307837cbc095f Assembly-CSharp.dll:.GameInfo
+df3e091a475830f633839c8c23516198 Assembly-CSharp.dll:.GameInfo
 e53cc67d84060d628c7f03fc725766d8 Unity.TextMeshPro.dll:TMPro.TMP_FontAsset
 392c5b921098bd4c139d9146d0efa6d7 Unity.TextMeshPro.dll:TMPro.TMP_Settings
 486cd95c82d8305219c352c06b776e1f UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback
@@ -244,7 +244,7 @@ aac9c55ae7ba4b95b852a7d9c191acd1 Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
 2c0d50a767d77d468e17f6a6ad6f3861 Assembly-CSharp.dll:.Route
 0feac9b4350cc5fc40cd28b2ff56ad07 Assembly-CSharp.dll:DG.Tweening.DOTweenAnimation
 e04611b8715e6833d2bd7010fc6be10b Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
-419232aa78b52aab42c3c0b00a4fff8b Assembly-CSharp.dll:.LevelInPlayManager
+be794caca44fb26ab9543e4b6055fc08 Assembly-CSharp.dll:.LevelInPlayManager
 2f9af06a78208a67db480e9bfed4a076 Unity.TextMeshPro.dll:TMPro.TextMeshPro
 9318334b30e9f195f573b2ce00154b95 Unity.TextMeshPro.dll:TMPro.TMP_ColorGradient
 93307bd34e39d73fd24e00ec39c25a91 Unity.TextMeshPro.dll:TMPro.TMP_SubMesh

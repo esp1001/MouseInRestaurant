@@ -31,15 +31,14 @@ public class DatabaseManager : MonoBehaviour
         get { return _gameInfoDB.HeartsAtStart; }
     }
 
+    public float GetIncreaseMouseSpeedKoef
+    {
+        get {return _gameInfoDB.IncreaseMouseSpeedKoef;}
+    }
 
     void Awake()
     {
         Instance = this;
-    }
-
-    void Init()
-    {
-        LevelInPlayManager.Instance.CurrentLevelIdx = StartLevelIdx;
     }
 
     public LevelInfo GetLevelInfoByIdx(int levelIdx)

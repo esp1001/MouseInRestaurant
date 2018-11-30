@@ -60,7 +60,7 @@ public class LevelInPlayManager : MonoBehaviour, IHandler<StartGameEventMessage>
     [SerializeField]
     private List<GameObject> _allStaticObjects;
     [SerializeField]
-    private List<BezierFollow> _allMouses;
+    private List<BezierFollow> _allMice;
     [SerializeField]
     private List<GameObject> _allRoutes;
 
@@ -100,7 +100,7 @@ public class LevelInPlayManager : MonoBehaviour, IHandler<StartGameEventMessage>
     }
     public void AddMouse(BezierFollow mouse)
     {
-        _allMouses.Add(mouse);
+        _allMice.Add(mouse);
     }
 
     public GameObject GetRouteGOByIdx(int idx)
@@ -116,6 +116,40 @@ public class LevelInPlayManager : MonoBehaviour, IHandler<StartGameEventMessage>
     public void Handle(RemoveHeartEventMessage message)
     {
         HeartsNow--;
+    }
+
+    public void RemoveAllStaticObjects()
+    {
+        for (int i = _allStaticObjects.Count - 1; i > -1; i--)
+        {
+            Destroy(_allStaticObjects[i], 0.1f);
+        }
+        _allStaticObjects.Clear();
+    }
+
+    public void RemoveAllMice()
+    {
+        for (int i = _allMice.Count - 1; i > -1; i--)
+        {
+            Destroy(_allMice[i].gameObject, 0.1f);
+        }
+        _allMice.Clear();
+    }
+
+    public void RemoveAllRoutes()
+    {
+        for (int i = _allRoutes.Count - 1; i > -1; i--)
+        {
+            Destroy(_allRoutes[i], 0.1f);
+        }
+        _allRoutes.Clear();
+    }
+
+    public void RemoveDoneLevelStuff()
+    {
+        RemoveAllStaticObjects();
+        RemoveAllMice();
+        RemoveAllRoutes();
     }
 
 }

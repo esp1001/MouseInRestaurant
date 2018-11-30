@@ -4,14 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GenerateLevelManager : MonoBehaviour, 
-    IHandler<StartGameEventMessage>, 
-    IHandler<GenerateLevelEventMessage>, 
-    IHandler<AddOneMouseEventMessage>
+public class GenerateLevelManager : MonoBehaviour, IHandler<StartGameEventMessage>, IHandler<GenerateLevelEventMessage>, IHandler<AddOneMouseEventMessage>, IHandler<LevelDoneEventMessage>
 {
     public static GenerateLevelManager Instance { get; private set; }
 
-    [Header("Level GameObject's")] [SerializeField] private GameObject _floorGO;
+    [Header("Level GameObject's")] [SerializeField] private SpriteRenderer _floorSpriteRenderer;
     [SerializeField] private GameObject _staticObjectsDockGO;
     [SerializeField] private GameObject _routesDockGO;
 
@@ -32,6 +29,7 @@ public class GenerateLevelManager : MonoBehaviour,
         AppManager.Instance.EventAgregator.AddHandler<StartGameEventMessage>(this);
         AppManager.Instance.EventAgregator.AddHandler<GenerateLevelEventMessage>(this);
         AppManager.Instance.EventAgregator.AddHandler<AddOneMouseEventMessage>(this);
+        AppManager.Instance.EventAgregator.AddHandler<LevelDoneEventMessage>(this);
     }
 
     private void OnDestroy()
@@ -39,12 +37,13 @@ public class GenerateLevelManager : MonoBehaviour,
         AppManager.Instance.EventAgregator.RemoveHandler<StartGameEventMessage>(this);
         AppManager.Instance.EventAgregator.RemoveHandler<GenerateLevelEventMessage>(this);
         AppManager.Instance.EventAgregator.RemoveHandler<AddOneMouseEventMessage>(this);
+        AppManager.Instance.EventAgregator.RemoveHandler<LevelDoneEventMessage>(this);
     }
 
     #region Handlers
     public void Handle(StartGameEventMessage message)
     {
-        LevelInPlayManager.Instance.CurrentLevelIdx = 1;
+        LevelInPlayManager.Instance.CurrentLevelIdx = DatabaseManager.Instance.StartLevelIdx;
         GenerateLevel(message.StartLevelIdx);
     }
     public void Handle(GenerateLevelEventMessage message)
@@ -56,17 +55,19 @@ public class GenerateLevelManager : MonoBehaviour,
     {
         UpdateTappedMouses();    
     }
-
+    public void Handle(LevelDoneEventMessage message)
+    {
+        //Debug.Log("Level done!");
+        LevelInPlayManager.Instance.RemoveDoneLevelStuff();
+    }
     #endregion
 
     public void GenerateLevel(int levelIdx)
     {
-        LevelInPlayManager.Instance.Init(
-            DatabaseManager.Instance.GetLevelInfoByIdx(DatabaseManager.Instance.IsAllowedVariousLevels
-                ? levelIdx
-                : 1));
+        LevelInPlayManager.Instance.Init(DatabaseManager.Instance.GetLevelInfoByIdx(DatabaseManager.Instance.IsAllowedVariousLevels ? levelIdx : 1));
 
-        PrepareLevelProgressPanel(LevelInPlayManager.Instance.LevelInfo.Idx);
+        LevelInPlayManager.Instance.RemoveDoneLevelStuff();
+        PrepareLevelProgressPanel(LevelInPlayManager.Instance.CurrentLevelIdx);
         AddingRoutes();
         AddingStaticObjects();
 
@@ -80,6 +81,8 @@ public class GenerateLevelManager : MonoBehaviour,
         _nextLevelIdxText.text = (curLevelIdx + 1).ToString();
         _mouseTappedProgressText.text = "0 / " + LevelInPlayManager.Instance.MouseOnLevel;
         _mouseTappedProgressImage.fillAmount = 0;
+
+        _floorSpriteRenderer.sprite = LevelInPlayManager.Instance.LevelInfo.FloorTexture;
     }
 
     public void AddingRoutes()
@@ -109,5 +112,6 @@ public class GenerateLevelManager : MonoBehaviour,
         _mouseTappedProgressText.text = LevelInPlayManager.Instance.MouseTappedCount + " / " + LevelInPlayManager.Instance.MouseOnLevel;
         _mouseTappedProgressImage.fillAmount = LevelInPlayManager.Instance.MouseTappedCount / (float)LevelInPlayManager.Instance.MouseOnLevel;
     }
+
 
 }

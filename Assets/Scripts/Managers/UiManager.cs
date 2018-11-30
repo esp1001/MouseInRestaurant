@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiManager : MonoBehaviour, IHandler<StartGameEventMessage>, IHandler<RemoveHeartEventMessage>, IHandler<LevelDoneEventMessage>, IHandler<EndGameEventMessage>
+public class UiManager : MonoBehaviour, IHandler<StartGameEventMessage>, IHandler<RemoveHeartEventMessage>, IHandler<LevelDoneEventMessage>, IHandler<EndGameEventMessage>, IHandler<LevelReadyEventMessage>
 {
 
     public static UiManager Instance { get; private set; }
@@ -14,8 +15,12 @@ public class UiManager : MonoBehaviour, IHandler<StartGameEventMessage>, IHandle
     public Image LogoPanelImage;
     public List<Image> LogoParts;
     public GameObject StartButton;
-    
-    //private IHandler<GenerateLevelEventMessage> _handlerImplementation;
+    public TextMeshProUGUI LogoInfoTextGood;
+    public TextMeshProUGUI LogoInfoTextBad;
+    private readonly string _levelDoneText = "Level %1 done!";
+    private readonly string _loseText = "<size=180%>You lose!</font>\n<size=60%>Mouse captured the world!</font>";
+
+
     private readonly float _logoPanelTimeEffect = 0.5f;
 
     [SerializeField] private List<Image> _heartImages;
@@ -35,7 +40,8 @@ public class UiManager : MonoBehaviour, IHandler<StartGameEventMessage>, IHandle
         AppManager.Instance.EventAgregator.AddHandler<RemoveHeartEventMessage>(this);
         AppManager.Instance.EventAgregator.AddHandler<LevelDoneEventMessage>(this);
         AppManager.Instance.EventAgregator.AddHandler<EndGameEventMessage>(this);
-        ShowLogoPanel(true, false);
+        ShowLogoPanel(true, true, false);
+        ShowLogoText(false);
     }
 
     private void OnDestroy()
@@ -64,25 +70,44 @@ public class UiManager : MonoBehaviour, IHandler<StartGameEventMessage>, IHandle
     }
     public void Handle(LevelDoneEventMessage message)
     {
-        ShowLogoPanel(true);
+        ShowLogoPanel(true, false);
+        ShowLogoText(true, true, _levelDoneText.Replace("%1", LevelInPlayManager.Instance.CurrentLevelIdx.ToString("00")));
+      
+        Invoke("StartNextLevel", 1f);
     }
+
+    public void StartNextLevel()
+    {
+        LevelInPlayManager.Instance.CurrentLevelIdx++;
+        AppManager.Instance.EventAgregator.SendMessageAll(new GenerateLevelEventMessage(LevelInPlayManager.Instance.CurrentLevelIdx));
+    }
+
+
     public void Handle(EndGameEventMessage message)
     {
-        ShowLogoPanel(true);
+        ShowLogoPanel(true, true);
+        ShowLogoText(true, false, _loseText);
+    }
+
+    public void Handle(LevelReadyEventMessage message)
+    {
+        ShowLogoPanel(false, false);
     }
     #endregion
 
     public void StartGame(int startLevelIdx)
     {
-        ShowLogoPanel(false);
+        ShowLogoPanel(false, false);
         ResetHeartsEffect();
     }
 
-    public void ShowLogoPanel(bool showPanel, bool withEffects = true)
+    #region Manage Logo panel & etc
+    public void ShowLogoPanel(bool showPanel, bool showStartButton, bool withEffects = true)
     {
         if (!withEffects)
         {
             LogoPanel.SetActive(showPanel);
+            StartButton.SetActive(showStartButton);
             return;
         }
 
@@ -100,11 +125,12 @@ public class UiManager : MonoBehaviour, IHandler<StartGameEventMessage>, IHandle
                 curPart.DOColor(Color.white, _logoPanelTimeEffect / 2f).SetDelay(_logoPanelTimeEffect / 2f);
             }
 
-            StartButton.SetActive(true);
+            StartButton.SetActive(showStartButton);
         }
         else
         {
-            StartButton.SetActive(false);
+            StartButton.SetActive(showStartButton);
+            ShowLogoText(false);
 
             LogoPanelImage.fillAmount = 1;
             LogoPanelImage.DOFillAmount(0, _logoPanelTimeEffect).OnComplete(
@@ -120,6 +146,26 @@ public class UiManager : MonoBehaviour, IHandler<StartGameEventMessage>, IHandle
         }
 
     }
+
+    public void ShowLogoText(bool showText, bool showGoodOrBad = true, string text = "")
+    {
+        if (showText)
+        {
+            LogoInfoTextGood.gameObject.SetActive(showGoodOrBad);
+            LogoInfoTextBad.gameObject.SetActive(!showGoodOrBad);
+            if (showGoodOrBad)
+                LogoInfoTextGood.text = text;
+            else
+                LogoInfoTextBad.text = text;
+        }
+        else
+        {
+            LogoInfoTextGood.gameObject.SetActive(false);
+            LogoInfoTextBad.gameObject.SetActive(false);
+        }
+    }
+    #endregion
+
     #region Heart's effects
 
     public void ResetHeartsEffect()
@@ -150,6 +196,7 @@ public class UiManager : MonoBehaviour, IHandler<StartGameEventMessage>, IHandle
     }
 
     #endregion
+
 
 }
 
